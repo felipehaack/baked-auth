@@ -1,2 +1,6 @@
-*.class
+.idea
+out
+target
 *.log
+.DS_Store
+.sbtopts
