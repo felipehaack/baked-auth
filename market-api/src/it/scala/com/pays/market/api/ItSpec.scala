@@ -4,21 +4,21 @@ import java.io.InputStream
 
 import cats.SemigroupK.ops._
 import cats.data.EitherT
-import cats.effect.{ContextShift, IO, Sync, Timer}
+import cats.effect.{ ContextShift, IO, Sync, Timer }
 import cats.kernel.instances.StringInstances
-import cats.{Monad, MonadError}
+import cats.{ Monad, MonadError }
 import com.pays.market.api.config.AppConfig
 import com.pays.market.api.config.AppConfig.appConfig
 import com.pays.market.api.db.PostgresDb
 import com.pays.market.api.injection.Injector
-import com.pays.market.api.resouce.{ConnectionPoolResource, HikariResource}
-import com.pays.market.api.util.{FileReader, JwtCodec}
+import com.pays.market.api.resouce.{ ConnectionPoolResource, HikariResource }
+import com.pays.market.api.util.{ FileReader, JwtCodec }
 import fs2.Stream
-import io.circe.{Decoder, Encoder, parser}
+import io.circe.{ parser, Decoder, Encoder }
 import org.http4s._
 import org.http4s.syntax.KleisliSyntax
 import org.specs2.execute.AsResult
-import org.specs2.mutable.{Before, BeforeAfter, Specification}
+import org.specs2.mutable.{ Before, Specification }
 
 import scala.concurrent.ExecutionContext
 import scala.io.Source
@@ -32,13 +32,6 @@ trait ItSpec extends Specification with ItHttpHelper with ItSuite with ItJsonHel
     } yield ()
     r.unsafeRunSync()
   }
-
-  /*override def after: Any = {
-    val r = for {
-      _ <- truncateTables
-    } yield ()
-    r.unsafeRunSync()
-  }*/
 }
 
 trait ItHttpHelper extends KleisliSyntax with StringInstances {
