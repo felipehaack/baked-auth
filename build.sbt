@@ -1,14 +1,5 @@
-libraryDependencies ++= Seq(
-  Cassandra.driver,
-  Cats.core,
-  Cats.effect,
-  Circe.core,
-  Circe.generic,
-  Circe.parser,
-  Http4s.server,
-  Http4s.dsl,
-  Specs2.core,
-  TypeSafe.config,
-  Utils.ficus,
-  Utils.logback
-)
+val api = Project("market-api", file("market-api"))
+val db  = Project("market-db", file("market-db"))
+
+val root = Project("market", file("."))
+  .aggregate(api)
