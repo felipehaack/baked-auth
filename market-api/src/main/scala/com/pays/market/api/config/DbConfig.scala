@@ -6,7 +6,4 @@ case class DbConfig(
   pwd: String,
   driver: String,
   properties: Map[String, String]
-  /*cachePrepStmts: Boolean,
-  prepStmtCacheSize: Int,
-  prepStmtCacheSqlLimit: Int*/
 )
