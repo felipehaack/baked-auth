@@ -15,16 +15,17 @@ object BasicSettings extends AutoPlugin {
             "repo1" at "https://repo1.maven.org/maven2/"
           ),
       scalacOptions ++= Seq(
-            "-deprecation",     // Emit warning and location for usages of deprecated APIs.
-            "-feature",         // Emit warning and location for usages of features that should be imported explicitly.
-            "-unchecked",       // Enable additional warnings where generated code depends on assumptions.
-            "-Xfatal-warnings", // Fail the compilation if there are any warnings.
             "-encoding",
-            "UTF-8",                         // Adding default encode type
-            "-language:implicitConversions", // Otherwise the compiler will ask to import scala.language.implicitConversions
-            "-language:higherKinds",         // Enable by default the high kinds for cats
+            "UTF-8",                         // source files are in UTF-8
+            "-deprecation",                  // warn about use of deprecated APIs
+            "-unchecked",                    // warn about unchecked type parameters
+            "-feature",                      // warn about misused language features
+            "-language:higherKinds",         // allow higher kinded types without `import scala.language.higherKinds`
             "-language:postfixOps",          // Enable by default post fix ops for cats
-            "-Ypartial-unification"          // This is optional, but it is better to keep as it might result in fail on Http4s
+            "-language:implicitConversions", // Otherwise the compiler will ask to import scala.language.implicitConversions
+            "-Xlint",                        // enable handy linter warnings
+            "-Xfatal-warnings",              // turn compiler warnings into errors
+            "-Ypartial-unification"          // allow the compiler to unify type constructors of different arities
           ),
       javacOptions ++= Seq(
             "-source",
