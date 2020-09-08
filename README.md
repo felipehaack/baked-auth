@@ -19,7 +19,7 @@ Run the backend application: `$ sbt "project market-api run`
 Login endpoint:
 
 ```
-curl -v -X POST http://localhost:8081/api/login \                                                                                               SIGINT(2) ↵  10011  00:30:00
+curl -v -X POST http://localhost:8081/api/login \
 -H 'Content-Type: text/json' \
 -d @- << EOF
 {
