@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+  postgres:
+    image: postgres:9.6.19
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgresql-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=marketapi
+      - POSTGRES_PASSWORD=marketapi
+      - POSTGRES_DB=market
