@@ -1,4 +1,4 @@
-package com.market.app
+package com.pays.market.api
 
 import cats.effect.{ ExitCode, IO, IOApp }
 
