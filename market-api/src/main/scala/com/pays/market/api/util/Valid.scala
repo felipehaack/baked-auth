@@ -2,7 +2,7 @@ package com.pays.market.api.util
 
 import com.wix.accord.{ Failure, NullSafeValidator, RuleViolation }
 
-object Validators {
+object Valid {
   private val emailRegex =
     "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$".r
 

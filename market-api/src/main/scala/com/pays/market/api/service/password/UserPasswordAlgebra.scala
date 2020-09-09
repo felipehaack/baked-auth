@@ -23,7 +23,7 @@ object UserPasswordAlgebra {
       )(
         implicit D: DBSession
       ): F[UserPassword] = {
-        val r = D.first("select * from user_passwords where user_id = ?", userId)(rowToObj)
+        val r = D.first("SELECT * FROM user_passwords WHERE user_id = ?", userId)(rowToObj)
         S.fromOption(r, MarketApiException.notFound("user_password"))
       }
     }

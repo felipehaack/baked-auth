@@ -1,6 +1,6 @@
 package com.pays.market.api.service.login
 
-import com.pays.market.api.util.Validators
+import com.pays.market.api.util.Valid
 import com.wix.accord.dsl._
 import io.circe.generic.JsonCodec
 
@@ -13,7 +13,7 @@ object Login {
 
   implicit val Validator = validator[Login] { v =>
     v.email.length must between(5, 256)
-    v.email is Validators.Email
+    v.email is Valid.Email
 
     v.password.length must between(6, 64)
   }

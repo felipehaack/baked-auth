@@ -10,19 +10,7 @@ import scalikejdbc.{ DBSession, NoSession }
 
 import scala.concurrent.ExecutionContext
 
-trait UnitMock {
-  val jwtCodec = JwtCodec.instance[IO](
-    jwtConfig = JwtConfig(
-      secret = "secret",
-      expireInDays = 10
-    )
-  )
-
-  val noSessionPostgresDb = new PostgresDb[IO] {
-    override def read[A](f: DBSession => IO[A]): IO[A]                                     = f(NoSession)
-    override def transaction[A](f: DBSession => IO[A])(implicit S: PostgresSession): IO[A] = f(NoSession)
-  }
-}
+trait UnitSpec extends Specification with UnitSuite with UnitMock with UnitRepo
 
 trait UnitSuite {
   implicit val timer: Timer[IO]               = IO.timer(ExecutionContext.global)
@@ -37,4 +25,16 @@ trait UnitSuite {
     }
 }
 
-trait UnitSpec extends Specification with UnitSuite with UnitMock with UnitRepo
+trait UnitMock {
+  val jwtCodec = JwtCodec.instance[IO](
+    jwtConfig = JwtConfig(
+      secret = "secret",
+      expireInDays = 10
+    )
+  )
+
+  val noSessionPostgresDb = new PostgresDb[IO] {
+    override def read[A](f: DBSession => IO[A]): IO[A]                                     = f(NoSession)
+    override def transaction[A](f: DBSession => IO[A])(implicit S: PostgresSession): IO[A] = f(NoSession)
+  }
+}

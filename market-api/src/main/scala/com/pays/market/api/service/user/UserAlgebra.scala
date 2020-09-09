@@ -26,7 +26,7 @@ object UserAlgebra {
       )(
         implicit D: DBSession
       ): F[User] = {
-        val r = D.first("select * from users where email = ?", email)(rowToObj)
+        val r = D.first("SELECT * FROM users WHERE email = ?", email)(rowToObj)
         S.fromOption(r, MarketApiException.notFound("user"))
       }
     }
