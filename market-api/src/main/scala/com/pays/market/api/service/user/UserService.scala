@@ -1,6 +1,5 @@
 package com.pays.market.api.service.user
 
-import cats.effect.Sync
 import com.pays.market.api.db.PostgresDb
 
 trait UserService[F[_]] {
