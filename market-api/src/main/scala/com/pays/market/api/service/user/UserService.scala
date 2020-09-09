@@ -12,8 +12,6 @@ object UserService {
   def instance[F[_]](
     db: PostgresDb[F],
     userAlgebra: UserAlgebra[F, User]
-  )(
-    implicit S: Sync[F]
   ): UserService[F] =
     new UserService[F] {
       override def getByEmail(
