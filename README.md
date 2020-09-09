@@ -12,7 +12,7 @@ Run the docker compose file under the `docker` folder.
 
 Run the database migration: `$ sbt "project market-db" "run update"`
 
-Run the backend application: `$ sbt "project market-api run`
+Run the backend application: `$ sbt "project market-api run"`
 
 ### Calling the API
 
