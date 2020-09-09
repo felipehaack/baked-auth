@@ -3,7 +3,7 @@ package com.pays.market.db
 import com.typesafe.config.ConfigFactory
 import liquibase.integration.commandline.Main
 
-object Main extends App {
+object MainApp extends App {
   val config = ConfigFactory.load()
 
   val changelog = "db/changelog.xml"
