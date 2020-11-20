@@ -15,10 +15,17 @@ trait UnitRepo {
       status = "created"
     )
 
-    def algebra(effect: IO[User]): UserAlgebra[IO, User] =
+    val pureUser = IO.pure(user)
+
+    def algebra(
+      byEmail: IO[User],
+      byId: IO[User]
+    ): UserAlgebra[IO, User] =
       new UserAlgebra[IO, User] {
         override val rowToObj: WrappedResultSet => User                          = _ => user
-        override def findByEmail(email: String)(implicit D: DBSession): IO[User] = effect
+        override def findByEmail(email: String)(implicit D: DBSession): IO[User] = byEmail
+        override def findById(id: Long)(implicit D: DBSession): IO[User]         = byId
+        override def create(user: User.Create)(implicit D: DBSession): IO[Long]  = IO.apply(1000L)
       }
   }
 
