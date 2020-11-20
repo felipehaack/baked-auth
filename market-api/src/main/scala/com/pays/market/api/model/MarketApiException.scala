@@ -8,6 +8,8 @@ case class MarketNotFoundException(message: String) extends MarketApiException(m
 
 case class MarketInvalidException(message: String) extends MarketApiException(message)
 
+case class MarketInternalServerException(message: String) extends MarketApiException(message)
+
 case class MarketInvalidJsonException(errors: List[MarketApiInputError], message: String)
     extends MarketApiException(message)
 
@@ -20,4 +22,7 @@ object MarketApiException {
 
   def invalidInputs(errors: List[MarketApiInputError], message: String): MarketInvalidJsonException =
     MarketInvalidJsonException(errors, message)
+
+  def internalError(message: String): MarketInternalServerException =
+    MarketInternalServerException(message)
 }
