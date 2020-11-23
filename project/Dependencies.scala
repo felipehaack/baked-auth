@@ -24,6 +24,10 @@ object Dependencies extends AutoPlugin {
     val scalike   = "org.scalikejdbc" %% "scalikejdbc"    % "3.5.0"
   }
 
+  object Google {
+    val client = "com.google.api-client" % "google-api-client" % "1.30.10"
+  }
+
   object Http4s {
     private val version = "0.21.7"
     val dsl             = "org.http4s" %% "http4s-dsl"          % version

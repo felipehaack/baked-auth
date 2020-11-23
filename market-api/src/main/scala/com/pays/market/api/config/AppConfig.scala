@@ -10,7 +10,9 @@ case class AppConfig(
   env: EnvConfig.Value,
   api: ApiConfig,
   db: DbConfig,
-  jwt: JwtConfig
+  jwt: JwtConfig,
+  social: SocialConfig,
+  cors: CorsConfig
 )
 
 object AppConfig extends EnumerationReader {

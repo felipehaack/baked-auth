@@ -44,6 +44,8 @@ trait Api[F[_]] extends Http4sDsl[F] with AllSyntax {
             BadRequest.apply(MarketApiError("bad_request", e.message))
           case e: MarketInvalidJsonException =>
             BadRequest.apply(MarketApiError("bad_request", e.message, Some(e.errors)))
+          case e: MarketInternalServerException =>
+            InternalServerError.apply(MarketApiError("internal_error", e.message))
           case e =>
             InternalServerError.apply(MarketApiError("internal_error", e.getMessage))
         }
@@ -54,9 +56,7 @@ trait Api[F[_]] extends Http4sDsl[F] with AllSyntax {
       implicit S: Sync[F],
       V: Validator[T]
     ): F[T] =
-      r.body.chunks
-        .map(_.toArray)
-        .map(new String(_))
+      r.bodyText
         .compile
         .toList
         .map(_.headOption)

@@ -3,43 +3,41 @@ package com.pays.market.api.service.user
 import cats.effect.IO
 import com.pays.market.api.UnitSpec
 import com.pays.market.api.model.MarketApiException
-import scalikejdbc.{ DBSession, NoSession, WrappedResultSet }
+import scalikejdbc.NoSession
 
 class UserAlgebraSpec extends UnitSpec {
 
-  private val user = User(
-    id = 1000,
-    name = "name",
-    email = "email@email.com",
-    status = "created"
-  )
-
-  private def mockUserAlgebra(
-    effect: IO[User]
-  ): UserAlgebra[IO, User] =
-    new UserAlgebra[IO, User] {
-      override val rowToObj: WrappedResultSet => User = _ => user
-
-      override def findByEmail(email: String)(implicit D: DBSession): IO[User] = effect
-    }
-
   "UserAlgebra" >> {
-    "return an existing user" in {
+    "return an existing user by email" in {
       for {
-        newUser <- mockUserAlgebra(IO.pure(user)).findByEmail("find")(NoSession)
-      } yield newUser should beEqualTo(user)
+        existingUser <- UserRepo.algebra(UserRepo.pureUser, UserRepo.pureUser).findByEmail("find")(NoSession)
+      } yield existingUser should beEqualTo(UserRepo.user)
+    }
+    "return an existing user by id" in {
+      for {
+        existingUser <- UserRepo.algebra(UserRepo.pureUser, UserRepo.pureUser).findById(10)(NoSession)
+      } yield existingUser should beEqualTo(UserRepo.user)
+    }
+    "create a new user" in {
+      val create = User.Create(
+        name = "name",
+        email = "email"
+      )
+      for {
+        userId <- UserRepo.algebra(UserRepo.pureUser, UserRepo.pureUser).create(create)(NoSession)
+      } yield userId should beEqualTo(1000L)
     }
     "return NotFound exception in case of user does not exist" in {
       val error   = MarketApiException.notFound("not found")
       val input   = IO.raiseError(error)
-      val attempt = mockUserAlgebra(input).findByEmail("find")(NoSession).attempt.unsafeRunSync()
+      val attempt = UserRepo.algebra(input, input).findByEmail("find")(NoSession).attempt.unsafeRunSync()
       attempt must beLeft
       attempt.left.get must beEqualTo(error)
     }
     "return Exception in case of any other error" in {
       val error   = new Exception("random error")
       val input   = IO.raiseError(error)
-      val attempt = mockUserAlgebra(input).findByEmail("find")(NoSession).attempt.unsafeRunSync()
+      val attempt = UserRepo.algebra(input, input).findByEmail("find")(NoSession).attempt.unsafeRunSync()
       attempt must beLeft
       attempt.left.get must beEqualTo(error)
     }

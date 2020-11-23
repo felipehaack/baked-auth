@@ -17,7 +17,7 @@ class LoginApiSpec extends ItSpec {
     message = "user_or_password"
   )
 
-  "ApiLoginRoute" >> {
+  "LoginApi" >> {
     "return OK for a valid logged user" in {
       val login = Login(
         email = "email@email.com",
@@ -26,7 +26,6 @@ class LoginApiSpec extends ItSpec {
       apis.use { implicit routes =>
         for {
           response <- post"$path".withJsonObj(login).compile
-          _ = println(response.bodyAsString.unsafeRunSync())
           _ = response.status must beEqualTo(Status.Ok)
           t       <- response.bodyAsJson[Token]
           isValid <- jwtCodec.isValid(t.token).attempt

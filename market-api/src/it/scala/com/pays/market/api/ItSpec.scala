@@ -4,7 +4,7 @@ import java.io.InputStream
 
 import cats.SemigroupK.ops._
 import cats.data.EitherT
-import cats.effect.{ ContextShift, IO, Sync, Timer }
+import cats.effect.{ IO, Sync }
 import cats.kernel.instances.StringInstances
 import cats.{ Monad, MonadError }
 import com.pays.market.api.config.AppConfig
@@ -83,9 +83,6 @@ trait ItHttpHelper extends KleisliSyntax with StringInstances {
 }
 
 trait ItSuite {
-  implicit val timer: Timer[IO]               = IO.timer(ExecutionContext.global)
-  implicit val contextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
-
   implicit def ioAsResult[A : AsResult]: AsResult[IO[A]] =
     new AsResult[IO[A]] {
       override def asResult(io: => IO[A]) =
@@ -130,6 +127,8 @@ trait ItJsonHelper {
 
 trait Instances {
 
+  implicit val contextShift = IO.contextShift(ExecutionContext.global)
+
   val jwtCodec = JwtCodec.instance[IO](
     jwtConfig = AppConfig.appConfig.jwt
   )
@@ -148,6 +147,7 @@ trait Instances {
       connectionPool = connectionPool
     )
     val singleton = Injector.singleton[IO](
+      appConfig = appConfig,
       db = db,
       jwtCodec = jwtCodec
     )

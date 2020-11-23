@@ -17,7 +17,7 @@ object LoginApi {
           case r @ POST -> Root / "api" / "login" =>
             val result = for {
               login <- r.decodeJson[Login]
-              token <- loginService.create(login)
+              token <- loginService.createNormal(login)
             } yield token
             result.asJson
         }

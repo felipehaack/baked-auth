@@ -6,3 +6,12 @@ case class User(
   email: String,
   status: String
 )
+
+object User {
+
+  case class Create(
+    name: String,
+    email: String,
+    status: String = "active"
+  )
+}
