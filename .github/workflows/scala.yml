@@ -16,6 +16,6 @@ jobs:
     - name: run unit test
       run: sbt test
     - name: run database migration
-      run: sbt "project market-db" "run update"
+      run: sbt "project baked-db" "run update"
     - name: run integration test
       run: sbt it:test

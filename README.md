@@ -10,13 +10,15 @@ Run the docker compose file under the `docker` folder.
 
 ## How to run
 
-Run the database migration: `$ sbt "project market-db" "run update"`
+Run the database migration: `$ sbt "project baked-db" "run update"`
 
-Run the backend application: `$ sbt "project market-api" run`
+Run the backend application: `$ sbt "project baked-api" run`
 
 ### Calling the API
 
-Login endpoint:
+#### Login endpoints
+
+Normal login:
 
 ```
 curl -v -X POST http://localhost:8081/api/login \
@@ -29,8 +31,32 @@ curl -v -X POST http://localhost:8081/api/login \
 EOF
 ```
 
+Google login:
+
+```
+curl -v -X POST http://localhost:8081/api/login/google \
+-H 'Content-Type: text/json' \
+-d @- << EOF
+{
+ "token": "GOOGLE_TOKEN"
+}
+EOF
+```
+
+When running on `local env`, you can set any value on token, it will represent by name and email.
+
+```
+curl -v -X POST http://localhost:8081/api/login/google \
+-H 'Content-Type: text/json' \
+-d @- << EOF
+{
+ "token": "myemail@email.com"
+}
+EOF
+```
+
 ## How to test
 
-Run the unit test: `sbt "project market-api" test`
+Run the unit test: `sbt "project baked-api" test`
 
-Run the integration test: `sbt "project market-api" it:test`
+Run the integration test: `sbt "project baked-api" it:test`

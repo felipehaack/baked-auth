@@ -8,7 +8,7 @@ object BasicSettings extends AutoPlugin {
   lazy val settings: Seq[Def.Setting[_]] =
     Seq(
       scalaVersion := "2.12.12",
-      organization := "com.pays.market",
+      organization := "com.baked.auth",
       resolvers ++= Seq(
             Resolver.jcenterRepo,
             Resolver.mavenCentral,
