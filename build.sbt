@@ -1,5 +1,5 @@
-val api = Project("market-api", file("market-api"))
-val db  = Project("market-db", file("market-db"))
+val api = Project("baked-api", file("baked-api"))
+val db  = Project("baked-db", file("baked-db"))
 
-val root = Project("market", file("."))
+val root = Project("baked", file("."))
   .aggregate(api)
