@@ -1,9 +1,10 @@
 package com.baked.auth.api.config
 
-case class SocialGoogleConfig(
+case class SocialAudienceConfig(
   audience: String
 )
 
 case class SocialConfig(
-  google: SocialGoogleConfig
+  google: SocialAudienceConfig,
+  facebook: SocialAudienceConfig
 )
