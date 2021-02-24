@@ -5,7 +5,7 @@ import cats.FlatMap.ops._
 import cats.effect.Sync
 import cats.syntax.ApplicativeErrorSyntax
 import com.baked.auth.api.db.PostgresDb
-import com.baked.auth.api.model.{ MarketApiException, MarketNotFoundException }
+import com.baked.auth.api.model.{ BakedAuthException, BakedAuthNotFoundException }
 import com.baked.auth.api.service.password.UserPasswordService
 import com.baked.auth.api.service.social.model.Login.Me
 import com.baked.auth.api.service.user.{ User, UserService }
@@ -38,10 +38,10 @@ object LoginService {
           userPassword <- userPasswordService.get(user.id)
           _ <- login.password.isBcryptedSafe(userPassword.encryptedPassword) match {
             case Success(v) if v  => A.unit
-            case Success(v) if !v => A.raiseError[Unit](MarketApiException.invalid("password_invalid"))
+            case Success(v) if !v => A.raiseError[Unit](BakedAuthException.invalid("password_invalid"))
             case Failure(e) =>
               logger.info(s"unexpected password error for $login", e)
-              A.raiseError[Unit](MarketApiException.invalid("password_decrypt_invalid"))
+              A.raiseError[Unit](BakedAuthException.invalid("password_decrypt_invalid"))
           }
           token <- jwtCodec.encode(user)
         } yield Login.Token.apply(token)
@@ -72,14 +72,14 @@ object LoginService {
         userService
           .getByEmail(me.email)
           .handleErrorWith {
-            case _: MarketNotFoundException => create(me)
-            case e                          => A.raiseError(e)
+            case _: BakedAuthNotFoundException => create(me)
+            case e                             => A.raiseError(e)
           }
       }
 
       private def handleLoginError(t: Throwable): F[Login.Token] = {
         logger.info("login failed with following error", t)
-        A.raiseError[Login.Token](MarketApiException.invalid("user_or_password"))
+        A.raiseError[Login.Token](BakedAuthException.invalid("user_or_password"))
       }
     }
 }

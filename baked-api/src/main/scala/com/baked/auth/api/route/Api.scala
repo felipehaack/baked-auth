@@ -38,16 +38,16 @@ trait Api[F[_]] extends Http4sDsl[F] with AllSyntax {
           case v         => Ok.apply(v)
         }
         .handleErrorWith {
-          case e: MarketNotFoundException =>
-            NotFound.apply(MarketApiError("not_found", e.message))
-          case e: MarketInvalidException =>
-            BadRequest.apply(MarketApiError("bad_request", e.message))
-          case e: MarketInvalidJsonException =>
-            BadRequest.apply(MarketApiError("bad_request", e.message, Some(e.errors)))
-          case e: MarketInternalServerException =>
-            InternalServerError.apply(MarketApiError("internal_error", e.message))
+          case e: BakedAuthNotFoundException =>
+            NotFound.apply(BakedAuthError("not_found", e.message))
+          case e: BakedAuthInvalidException =>
+            BadRequest.apply(BakedAuthError("bad_request", e.message))
+          case e: BakedAuthInvalidJsonException =>
+            BadRequest.apply(BakedAuthError("bad_request", e.message, Some(e.errors)))
+          case e: BakedAuthInternalServerException =>
+            InternalServerError.apply(BakedAuthError("internal_error", e.message))
           case e =>
-            InternalServerError.apply(MarketApiError("internal_error", e.getMessage))
+            InternalServerError.apply(BakedAuthError("internal_error", e.getMessage))
         }
   }
 
@@ -65,17 +65,17 @@ trait Api[F[_]] extends Http4sDsl[F] with AllSyntax {
               obj        <- EitherT.apply[F, Error, T](S.pure(parsedBody.as[T]))
             } yield obj
 
-            eitherT.foldF(error => S.raiseError[T](MarketApiException.invalid(error.getMessage)), S.pure)
-          case None => S.raiseError[T](MarketApiException.invalid("malformed_body"))
+            eitherT.foldF(error => S.raiseError[T](BakedAuthException.invalid(error.getMessage)), S.pure)
+          case None => S.raiseError[T](BakedAuthException.invalid("malformed_body"))
         }
         .flatMap { v =>
           V.apply(v) match {
             case Success => S.pure(v)
             case Failure(violations) =>
               val errors = violations.toList.map { violation =>
-                MarketApiInputError(violation.value.toString, violation.constraint)
+                BakedAuthInputError(violation.value.toString, violation.constraint)
               }
-              S.raiseError[T](MarketApiException.invalidInputs(errors, "invalid_inputs"))
+              S.raiseError[T](BakedAuthException.invalidInputs(errors, "invalid_inputs"))
           }
         }
   }

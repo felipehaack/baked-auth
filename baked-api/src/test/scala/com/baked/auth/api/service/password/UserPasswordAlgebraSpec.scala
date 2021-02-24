@@ -2,7 +2,7 @@ package com.baked.auth.api.service.password
 
 import cats.effect.IO
 import com.baked.auth.api.UnitSpec
-import com.baked.auth.api.model.MarketApiException
+import com.baked.auth.api.model.BakedAuthException
 import scalikejdbc.NoSession
 
 class UserPasswordAlgebraSpec extends UnitSpec {
@@ -16,7 +16,7 @@ class UserPasswordAlgebraSpec extends UnitSpec {
       } yield newUser should beEqualTo(UserPasswordRepo.userPassword)
     }
     "return NotFound exception in case of user does not exist" in {
-      val error   = MarketApiException.notFound("not found")
+      val error   = BakedAuthException.notFound("not found")
       val input   = IO.raiseError(error)
       val attempt = UserPasswordRepo.algebra(input).findById(userId)(NoSession).attempt.unsafeRunSync()
       attempt must beLeft

@@ -2,7 +2,7 @@ package com.baked.auth.api.service.password
 
 import cats.effect.IO
 import com.baked.auth.api.UnitSpec
-import com.baked.auth.api.model.MarketApiException
+import com.baked.auth.api.model.BakedAuthException
 import scalikejdbc.{ DBSession, WrappedResultSet }
 
 class UserPasswordServiceSpec extends UnitSpec {
@@ -31,7 +31,7 @@ class UserPasswordServiceSpec extends UnitSpec {
       }
     }
     "return not found user" in {
-      val error               = MarketApiException.notFound("not found user")
+      val error               = BakedAuthException.notFound("not found user")
       val userPasswordAlgebra = mockUserPasswordAlgebra(IO.raiseError(error))
       val userPasswordService = UserPasswordService.instance[IO](
         db = noSessionPostgresDb,

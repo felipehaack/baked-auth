@@ -2,7 +2,7 @@ package com.baked.auth.api.route
 
 import cats.effect.IO
 import com.baked.auth.api.ItSpec
-import com.baked.auth.api.model.MarketApiError
+import com.baked.auth.api.model.BakedAuthError
 import com.baked.auth.api.service.login.Login
 import com.baked.auth.api.service.login.Login.Token
 import org.http4s.Status
@@ -12,7 +12,7 @@ class LoginApiSpec extends ItSpec {
 
   private val path = "/api/login"
 
-  private val error = MarketApiError(
+  private val error = BakedAuthError(
     code = "bad_request",
     message = "user_or_password"
   )
@@ -41,7 +41,7 @@ class LoginApiSpec extends ItSpec {
         for {
           response <- post"$path".withJsonObj(login).compile
           _ = response.status must beEqualTo(Status.BadRequest)
-          responseError <- response.bodyAsJson[MarketApiError]
+          responseError <- response.bodyAsJson[BakedAuthError]
         } yield responseError must beEqualTo(error)
       }
     }
@@ -54,7 +54,7 @@ class LoginApiSpec extends ItSpec {
         for {
           response <- post"$path".withJsonObj(login).compile
           _ = response.status must beEqualTo(Status.BadRequest)
-          responseError <- response.bodyAsJson[MarketApiError]
+          responseError <- response.bodyAsJson[BakedAuthError]
         } yield responseError must beEqualTo(error)
       }
     }

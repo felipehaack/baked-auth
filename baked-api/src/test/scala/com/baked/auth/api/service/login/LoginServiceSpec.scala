@@ -2,7 +2,7 @@ package com.baked.auth.api.service.login
 
 import cats.effect.IO
 import com.baked.auth.api.UnitSpec
-import com.baked.auth.api.model.MarketApiException
+import com.baked.auth.api.model.BakedAuthException
 import com.baked.auth.api.service.password.UserPasswordService
 import com.baked.auth.api.service.social.model.Login.Me
 import com.baked.auth.api.service.user.UserService
@@ -46,7 +46,7 @@ class LoginServiceSpec extends UnitSpec {
         } yield either must beRight
       }
       "return user not found" in {
-        val error     = MarketApiException.notFound("user")
+        val error     = BakedAuthException.notFound("user")
         val pureError = IO.raiseError(error)
         val localUserService = UserService.instance[IO](
           db = noSessionPostgresDb,
@@ -64,11 +64,11 @@ class LoginServiceSpec extends UnitSpec {
           either <- localLoginService.createNormal(login).attempt
         } yield {
           either must beLeft
-          either.left.get must beEqualTo(MarketApiException.invalid("user_or_password"))
+          either.left.get must beEqualTo(BakedAuthException.invalid("user_or_password"))
         }
       }
       "return password not found" in {
-        val error = MarketApiException.notFound("password")
+        val error = BakedAuthException.notFound("password")
         val localUserPasswordService = UserPasswordService.instance[IO](
           db = noSessionPostgresDb,
           userPasswordAlgebra = UserPasswordRepo.algebra(IO.raiseError(error))
@@ -85,7 +85,7 @@ class LoginServiceSpec extends UnitSpec {
           either <- localLoginService.createNormal(login).attempt
         } yield {
           either must beLeft
-          either.left.get must beEqualTo(MarketApiException.invalid("user_or_password"))
+          either.left.get must beEqualTo(BakedAuthException.invalid("user_or_password"))
         }
       }
       "return invalid password" in {
@@ -94,7 +94,7 @@ class LoginServiceSpec extends UnitSpec {
         )
         loginService.createNormal(localLogin).attempt.map { either =>
           either must beLeft
-          either.left.get must beEqualTo(MarketApiException.invalid("user_or_password"))
+          either.left.get must beEqualTo(BakedAuthException.invalid("user_or_password"))
         }
       }
     }
@@ -105,7 +105,7 @@ class LoginServiceSpec extends UnitSpec {
         } yield loginToken.token.nonEmpty must beTrue
       }
       "create a new user for a no existing user" in {
-        val errorNotFound = MarketApiException.notFound("not found user")
+        val errorNotFound = BakedAuthException.notFound("not found user")
         val localUser     = UserRepo.algebra(IO.raiseError(errorNotFound), IO.pure(UserRepo.user))
         val localUserService = UserService.instance[IO](
           db = noSessionPostgresDb,
@@ -122,7 +122,7 @@ class LoginServiceSpec extends UnitSpec {
         } yield loginToken.token.nonEmpty must beTrue
       }
       "return an exception when trying to get an existing user" in {
-        val exception     = MarketApiException.internalError("internal error")
+        val exception     = BakedAuthException.internalError("internal error")
         val pureException = IO.raiseError(exception)
         val localUser     = UserRepo.algebra(pureException, pureException)
         val localUserService = UserService.instance[IO](
@@ -137,7 +137,7 @@ class LoginServiceSpec extends UnitSpec {
         )
         localLoginService.createSocial(me).attempt.map { attempt =>
           attempt must beLeft
-          attempt.left.get should beEqualTo(MarketApiException.invalid("user_or_password"))
+          attempt.left.get should beEqualTo(BakedAuthException.invalid("user_or_password"))
         }
       }
     }
