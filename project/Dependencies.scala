@@ -28,6 +28,10 @@ object Dependencies extends AutoPlugin {
     val client = "com.google.api-client" % "google-api-client" % "1.30.10"
   }
 
+  object Facebook {
+    val client = "com.restfb" % "restfb" % "3.14.0"
+  }
+
   object Http4s {
     private val version = "0.21.7"
     val dsl             = "org.http4s" %% "http4s-dsl"          % version
