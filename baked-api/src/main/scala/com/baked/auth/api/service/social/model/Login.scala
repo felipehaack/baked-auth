@@ -5,12 +5,12 @@ import io.circe.generic.JsonCodec
 
 object Login {
 
-  @JsonCodec case class WithGoogle(
+  @JsonCodec case class WithAccessToken(
     token: String
   )
 
-  object WithGoogle {
-    implicit val Validator = validator[WithGoogle] { v =>
+  object WithAccessToken {
+    implicit val Validator = validator[WithAccessToken] { v =>
       v.token is notEmpty
     }
   }
