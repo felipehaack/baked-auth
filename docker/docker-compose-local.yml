@@ -8,6 +8,6 @@ services:
     volumes:
       - ./postgresql-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=marketapi
-      - POSTGRES_PASSWORD=marketapi
-      - POSTGRES_DB=market
+      - POSTGRES_USER=bakedauth
+      - POSTGRES_PASSWORD=bakedauth
+      - POSTGRES_DB=bakedauth
