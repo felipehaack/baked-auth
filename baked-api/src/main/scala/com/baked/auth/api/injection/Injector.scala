@@ -6,6 +6,7 @@ import com.baked.auth.api.db.PostgresDb
 import com.baked.auth.api.route.{ ApiRoute, LoginApi, LoginSocialApi }
 import com.baked.auth.api.service.login.LoginService
 import com.baked.auth.api.service.password.{ UserPassword, UserPasswordAlgebra, UserPasswordService }
+import com.baked.auth.api.service.social.facebook.FacebookService
 import com.baked.auth.api.service.social.google.GoogleService
 import com.baked.auth.api.service.user.{ User, UserAlgebra, UserService }
 import com.baked.auth.api.util.{ Cors, JwtCodec }
@@ -19,6 +20,7 @@ trait Injector[F[_]] {
   val loginService: LoginService[F]
   val loginApi: LoginApi[F]
   val googleService: GoogleService[F]
+  val facebookService: FacebookService[F]
   val loginSocialApi: LoginSocialApi[F]
   val apis: List[ApiRoute[F]]
   val cors: CORSConfig
@@ -51,9 +53,14 @@ object Injector {
         if (appConfig.env != EnvConfig.Local) GoogleService.instance[F](appConfig.social.google)
         else GoogleService.localInstance[F]
 
+      override val facebookService: FacebookService[F] =
+        if (appConfig.env != EnvConfig.Local) FacebookService.instance[F](appConfig.social.facebook)
+        else FacebookService.localInstance[F]
+
       override val loginSocialApi: LoginSocialApi[F] =
         LoginSocialApi.instance[F](
           googleService = googleService,
+          facebookService = facebookService,
           loginService = loginService
         )
 
