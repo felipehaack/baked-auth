@@ -9,6 +9,7 @@ libraryDependencies ++= Seq(
   DB.hikaricp,
   DB.postgres,
   DB.scalike,
+  Facebook.client,
   Google.client,
   Http4s.dsl,
   Http4s.server,

@@ -8,7 +8,7 @@ import cats.syntax.ApplicativeErrorSyntax
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.baked.auth.api.config.JwtConfig
-import com.baked.auth.api.model.MarketApiException
+import com.baked.auth.api.model.BakedAuthException
 import com.baked.auth.api.service.user.User
 
 trait JwtCodec[F[_]] extends ApplicativeErrorSyntax with Log {
@@ -46,7 +46,7 @@ object JwtCodec {
           .map(_ => ())
           .handleErrorWith { e =>
             logger.info(s"invalid token with error ${e.getMessage}")
-            M.raiseError(MarketApiException.invalid("token"))
+            M.raiseError(BakedAuthException.invalid("token"))
           }
     }
 }

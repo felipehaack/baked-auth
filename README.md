@@ -38,7 +38,19 @@ curl -v -X POST http://localhost:8081/api/login/google \
 -H 'Content-Type: text/json' \
 -d @- << EOF
 {
- "token": "GOOGLE_TOKEN"
+ "token": "GOOGLE_ID_TOKEN"
+}
+EOF
+```
+
+Facebook login:
+
+```
+curl -v -X POST http://localhost:8081/api/login/facebook \
+-H 'Content-Type: text/json' \
+-d @- << EOF
+{
+ "token": "FACEBOOK_ACCESS_TOKEN"
 }
 EOF
 ```

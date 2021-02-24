@@ -7,11 +7,11 @@ import com.baked.auth.api.service.social.model.Login.WithAccessToken
 import org.http4s.Status
 import org.specs2.matcher.MatchResult
 
-class LoginGoogleApiSpec extends ItSpec {
+class LoginFacebookApiSpec extends ItSpec {
 
-  private val path = "/api/login/google"
+  private val path = "/api/login/facebook"
 
-  "LoginGoogleApi" >> {
+  "LoginFacebookApi" >> {
     def assertOK(login: WithAccessToken): IO[MatchResult[Either[Throwable, Unit]]] =
       apis.use { implicit routes =>
         for {

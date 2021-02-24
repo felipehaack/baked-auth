@@ -2,7 +2,7 @@ package com.baked.auth.api.service.user
 
 import cats.effect.IO
 import com.baked.auth.api.UnitSpec
-import com.baked.auth.api.model.MarketApiException
+import com.baked.auth.api.model.BakedAuthException
 
 class UserServiceSpec extends UnitSpec {
 
@@ -35,7 +35,7 @@ class UserServiceSpec extends UnitSpec {
       }
     }
     "return not found user" in {
-      val error       = MarketApiException.notFound("not found user")
+      val error       = BakedAuthException.notFound("not found user")
       val pureError   = IO.raiseError(error)
       val userAlgebra = UserRepo.algebra(pureError, pureError)
       val userService = UserService.instance[IO](

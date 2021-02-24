@@ -1,7 +1,7 @@
 package com.baked.auth.api.util
 
 import com.baked.auth.api.UnitSpec
-import com.baked.auth.api.model.MarketApiException
+import com.baked.auth.api.model.BakedAuthException
 
 class JwtCodecSpec extends UnitSpec {
 
@@ -17,7 +17,7 @@ class JwtCodecSpec extends UnitSpec {
         either <- jwtCodec.isValid("randomToken").attempt
       } yield {
         either must beLeft
-        val error = MarketApiException.invalid("token")
+        val error = BakedAuthException.invalid("token")
         either.left.get must beEqualTo(error)
       }
     }
